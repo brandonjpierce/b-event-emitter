@@ -1,0 +1,75 @@
+{
+  "parser": "babel-eslint",
+
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+
+  "ecmaFeatures": {
+    "classes": true,
+    "arrowFunctions": true,
+    "blockBindings": true,
+    "templateStrings": true,
+    "forOf": true,
+    "destructuring": true,
+    "defaultParams": true,
+    "spread": true,
+    "jsx": true,
+    "modules": true,
+    "generators": true
+  },
+
+  "rules": {
+    "indent": [2, 2],
+    "brace-style": [2, "1tbs"],
+    "quotes": [2, "single"],
+    "eqeqeq": 2,
+    "curly": 2,
+    "camelcase": 2,
+    "space-after-keywords": [2, "always"],
+    "guard-for-in": 2,
+    "block-scoped-var": 2,
+    "new-cap": 2,
+    "comma-style": [2, "last"],
+    "comma-spacing": [2, {"before": false, "after": true}],
+    "space-in-parens": [2, "never"],
+    "space-before-function-paren": [2, {
+      "anonymous": "never",
+      "named": "never"
+    }],
+    
+    "no-console": 0,
+    "no-alert": 2,
+    "no-var": 2,
+    "no-else-return": 2,
+    "no-trailing-spaces": [2, {
+      "skipBlankLines": true
+    }],
+    "no-extra-boolean-cast": 2,
+    "no-dupe-args": 2,
+    "no-dupe-keys": 2,
+    "no-extra-semi": 2,
+    "no-shadow": 2,
+    "no-undef": 2,
+    "no-return-assign": 2,
+    "no-unused-vars": [2, {
+      "vars": "local",
+      "args": "after-used"
+    }],
+    "no-multi-spaces": 2,
+    "no-cond-assign": 2,
+    "no-constant-condition": 2,
+    "no-duplicate-case": 2,
+    "no-empty": 2,
+    "no-inner-declarations": 2,
+    "no-invalid-regexp": 2,
+    "no-reserved-keys": 2,
+    "no-unreachable": 2,
+    "no-delete-var": 1,
+    "no-eval": 2,
+    "no-underscore-dangle": 0
+  }
+}

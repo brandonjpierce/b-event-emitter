@@ -1,10 +1,15 @@
 var expect = chai.expect;
 
 /** Stubs */
-var stub = new EventEmitter();
+var stub = null;
 function noop() {}
 
 describe('EventEmitter', function() {
+  
+  beforeEach(function() {
+    stub = new EventEmitter();
+  });
+  
   it('setMaxListeners() should set maxListeners', function() {
     stub.setMaxListeners(5);
     
@@ -25,6 +30,7 @@ describe('EventEmitter', function() {
   });
   
   it('off() should remove listener from event', function() {
+    stub.on('test', noop);
     stub.off('test', noop);
     
     expect(stub.listeners.test).to.have.length(0);
@@ -35,6 +41,34 @@ describe('EventEmitter', function() {
     stub.emit('foo');
     
     expect(stub.listeners.foo).to.have.length(0);
+  });
+  
+  it('getAllListeners() should grab entire listener object when no eventName is passed', function() {
+    stub.on('foo', noop);
+    stub.on('bar', noop);
+    
+    var listeners = stub.getAllListeners();
+        
+    expect(listeners).to.be.a('object');
+    expect(listeners).to.include.keys('foo');
+    expect(listeners).to.include.keys('bar');
+  });
+  
+  it('getAllListeners(eventName) should grab listeners only for passed in eventName', function() {
+    stub.on('foo', noop);
+    stub.on('foo', noop);
+    
+    var listeners = stub.getAllListeners('foo');
+        
+    expect(listeners).to.be.a('array');
+    expect(listeners).to.have.length(2);
+  });
+  
+  it('getAllListeners(eventName) should return an empty array if no listeners are found for specified eventName', function() {
+    var listeners = stub.getAllListeners('foo');
+    
+    expect(listeners).to.be.a('array');
+    expect(listeners).to.have.length(0);
   });
   
   it('should throw TypeError if a function is not passed for a listener', function() {

@@ -1,20 +1,28 @@
 {
   "name": "smelly-event-emitter",
   "version": "0.1.0",
-  "description": "A minimal and fast event-emitter.",
+  "description": "A minimal and fast event-emitter for the browser.",
   "main": "dist/event-emitter.min.js",
   "dependencies": {},
   "devDependencies": {
     "babel-core": "^5.6.15",
     "babel-loader": "^5.2.2",
+    "chai": "^3.0.0",
     "mocha": "^2.2.5",
     "node-libs-browser": "^0.5.2",
     "webpack": "^1.10.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brandonjpierce/event-emitter.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node_modules/.bin/webpack --progress --colors --watch",
-    "build": "NODE_ENV=production node_modules/.bin/webpack --progress --colors"
+    "dev": "./node_modules/.bin/webpack --progress --colors --watch",
+    "build": "NODE_ENV=production ./node_modules/.bin/webpack --progress --colors"
+  },
+  "bugs": {
+    "url": "https://github.com/brandonjpierce/event-emitter/issues"
   },
   "keywords": [
     "eventemitter",

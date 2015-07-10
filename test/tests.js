@@ -1,10 +1,8 @@
-function noop() {}
-
-function Stub() {}
-Stub.prototype = new EventEmitter();
-
 var expect = chai.expect;
-var stub = new Stub();
+
+/** Stubs */
+var stub = new EventEmitter();
+function noop() {}
 
 describe('EventEmitter', function() {
   it('setMaxListeners() should set maxListeners', function() {

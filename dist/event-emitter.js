@@ -82,14 +82,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _classCallCheck(this, EventEmitter);
 
 	    this.listeners = {};
-	    this.maxListeners = 1;
+	    this.maxListeners = 10;
 	  }
 
 	  _createClass(EventEmitter, [{
 	    key: 'setMaxListeners',
 
 	    /**
-	     * Override max listeners
+	     * Setter method for maxListener count
 	     *
 	     * @method setMaxListeners
 	     *
@@ -102,7 +102,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'getMaxListeners',
 
 	    /**
-	     * Simple getter method for maxListener count
+	     * Getter method for maxListener count
 	     *
 	     * @method getMaxListeners
 	     *
@@ -110,6 +110,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    value: function getMaxListeners() {
 	      return this.maxListeners;
+	    }
+	  }, {
+	    key: 'getAllListeners',
+
+	    /**
+	     * Getter method for grabbing all listeners for an event name or all of them
+	     * globally.
+	     *
+	     * @method getAllListeners
+	     *
+	     * @param {String} eventName Specific event name we want to grab listeners for
+	     *
+	     * @return {Array} Array of listeners
+	     */
+	    value: function getAllListeners() {
+	      var eventName = arguments[0] === undefined ? null : arguments[0];
+
+	      if (eventName) {
+	        return this.listeners[eventName] || [];
+	      }
+
+	      return this.listeners;
 	    }
 	  }, {
 	    key: 'on',
@@ -139,6 +161,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
+	    key: 'once',
+
+	    /**
+	     * Attach a listener to an event but only fire once
+	     *
+	     * @method once
+	     *
+	     * @param {String} eventName The event name we want to attach our listener to
+	     * @param {Function} listener  Listener callback function
+	     */
+	    value: function once(eventName, listener) {
+	      if (!utils.isFunction(listener)) {
+	        throw new TypeError('Listener must be a function');
+	      }
+
+	      function tmp() {
+	        this.off(eventName, tmp);
+	        listener.apply(this, arguments);
+	      }
+
+	      this.on(eventName, tmp);
+	    }
+	  }, {
 	    key: 'off',
 
 	    /**
@@ -162,6 +207,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var listenerCount = listeners.length;
 	      var position = -1;
 
+	      // perf shortcut
 	      if (listenerCount === 1) {
 	        this.listeners[eventName] = [];
 	      } else {
@@ -202,6 +248,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        args[_key - 1] = arguments[_key];
 	      }
 
+	      // perf shortcut
 	      if (listenerCount === 1) {
 	        listeners[0].apply(this, args);
 	      } else {

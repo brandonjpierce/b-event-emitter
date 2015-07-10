@@ -9,11 +9,11 @@ export default class EventEmitter {
    */
   constructor() {
     this.listeners = {};
-    this.maxListeners = 1;
+    this.maxListeners = 10;
   }
   
   /**
-   * Override max listeners
+   * Setter method for maxListener count
    *
    * @method setMaxListeners
    *
@@ -24,7 +24,7 @@ export default class EventEmitter {
   }
   
   /**
-   * Simple getter method for maxListener count
+   * Getter method for maxListener count
    *
    * @method getMaxListeners
    *
@@ -32,6 +32,24 @@ export default class EventEmitter {
    */
   getMaxListeners() {
     return this.maxListeners;
+  }
+  
+  /**
+   * Getter method for grabbing all listeners for an event name or all of them
+   * globally.
+   *
+   * @method getAllListeners
+   *
+   * @param {String} eventName Specific event name we want to grab listeners for
+   *
+   * @return {Array} Array of listeners
+   */
+  getAllListeners(eventName = null) {
+    if (eventName) {
+      return this.listeners[eventName] || [];
+    }
+    
+    return this.listeners;
   }
   
   /**
@@ -64,6 +82,27 @@ export default class EventEmitter {
   }
   
   /**
+   * Attach a listener to an event but only fire once
+   *
+   * @method once
+   *
+   * @param {String} eventName The event name we want to attach our listener to
+   * @param {Function} listener  Listener callback function
+   */
+  once(eventName, listener) {
+    if (!utils.isFunction(listener)) {
+      throw new TypeError('Listener must be a function');
+    }
+    
+    function tmp() {
+      this.off(eventName, tmp);
+      listener.apply(this, arguments);
+    }
+    
+    this.on(eventName, tmp);
+  }
+  
+  /**
    * Remove a listener from an event
    *
    * @method off
@@ -83,7 +122,8 @@ export default class EventEmitter {
     let listeners = this.listeners[eventName];
     let listenerCount = listeners.length;
     let position = -1;
-        
+      
+    // perf shortcut
     if (listenerCount === 1) {
       this.listeners[eventName] = [];
     } else {
@@ -118,6 +158,7 @@ export default class EventEmitter {
     let listeners = this.listeners[eventName];
     let listenerCount = listeners.length;
     
+    // perf shortcut
     if (listenerCount === 1) {
       listeners[0].apply(this, args);
     } else {
